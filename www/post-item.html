@@ -1,0 +1,75 @@
+<!-- Top Navbar-->
+ <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Back</span></a></div>
+                    <div class="center sliding">{{song_title}}</div>
+                    <div class="right">
+                        <a href="#" class="link star">
+                            <i class="fa fa-star-o"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div data-page="post-detail" class="page">
+                <div class="page-content">
+                    <div class="item-data-info">
+                        <div class="item-data-image">
+                             {{#if thumbnail}}<img data-src="{{thumbnail}}" class="lazy lazy-fadein">{{/if}}
+                        </div>
+                        <div class="header-text">
+                            <div class="song-data-info">
+                                <div class="in-label">Artist:</div>
+                                <div class="info-name item-title">{{artist}}</div>
+                                <div class="in-label">Track:</div>
+                                <div class="info-song item-title">{{song_title}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                   {{#if lyrics}}
+                        <div class="lyrics">
+                            <div class="lyrics-content-inner">
+                            <div class="lyrics-content">{{lyrics}}</div>
+                            </div>
+                        </div>
+                   {{else}}
+                   <div class="card">
+                    <div class="card-content">
+                        <div class="card-content-inner">Lyrics is not available for this song. Sorry!</div>
+                    </div>
+                    </div>
+                   {{/if}}
+                </div>
+                {{#if mp3_file}}
+                    <div id="outerpreviewAudio">
+                    <div id="previewAudio" class="item-content bottom-audio">
+                            <audio  preload="auto" id="musicMP3" src="{{mp3_file}}"></audio>
+                            <div class="playbacktime"></div>                            
+                            <div class="audioPlayer">   
+                                <div id="timeline">
+                                    <div id="scrub"></div>
+                                    <div id="playhead"></div>
+                                </div>
+                                <div id="btnAudioPP" class="play"></div>
+                                <div class="artist-info"><div class="info-song item-title">{{song_title}}</div><div class="info-name item-title">{{artist}}</div></div>
+                            </div>
+                    </div>
+                    </div> 
+                {{/if}}
+            </div> 
+
+    <script>
+        if(AdMob) 
+        //AdMob.prepareInterstitial( {adId:admobid.interstitial, autoShow:false} );
+        // show the interstitial later, e.g. at end of game level
+        //if(AdMob) AdMob.showInterstitial();
+
+
+    AdMob.prepareInterstitial({
+    adId: admobid.interstitial,
+    isTesting: true, // TODO: remove this line when release
+    autoShow: false
+  });
+  AdMob.showInterstitial();
+    </script>

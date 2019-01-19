@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; connect-src http://oklyrics.com.ng">-->
+
+
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Your app title -->
+    <title>Evergreen NG</title>
+
+    <!-- This template defaults to the iOS CSS theme. To support both iOS and material design themes, see the Framework7 Tutorial at the link below:
+        http://www.idangero.us/framework7/tutorials/maintain-both-ios-and-material-themes-in-single-app.html
+     -->
+
+    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.min.css">
+    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="layout-dark">
+    <!-- Status bar overlay for full screen mode (PhoneGap) -->
+    <div class="statusbar-overlay"></div>
+
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+        <div class="list-block">
+            <ul>
+                <li id="home">
+                    <div class="item-content">
+                        <div class="item-media"> <i class="icon fa fa-cog"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label  home-link">Home</div>
+                        </div>
+                    </div>
+                </li>
+                <li id="favorites">
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon fa fa-star"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">Favorites</div>
+                        </div>
+                    </div>
+                </li>
+                <li id="about">
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon fa fa-info-circle"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title label">About</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Views -->
+    <div class="views">
+        <!-- Main view-->
+        <div class="view view-main">
+            <!-- Top Navigation Bar-->
+            <div class="navbar">
+                <div class="navbar-inner nav-main">
+                    <!-- Home navbar -->
+                    <div class="left ">
+                        <!-- Left side navbar contains only icon -->
+                        <a href="#" class="link icon-only open-panel">
+                         <i class="icon icon-bars"></i>
+                     </a>
+                    </div>
+                    <div class="center sliding">Evergreen NG</div>
+                    <div class="right"><a href="#" class="icon-only"><i class="fa fa-wifi"></i></a></div>
+                </div>
+            </div>
+
+            <!-- Pages -->
+            <div class="pages navbar-through toolbar-through">
+                <!-- Page, data-page contains page name-->
+                <div data-page="index" class="page" id="postIndex">
+
+                    <!-- Scrollable page content-->
+                    <div class="page-content">
+                        <!-- Pull to Refresh -->
+                       
+                        <div class="content-block-title">Criteria</div>
+                        <div class="list-block">
+                            <ul>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-media"><i class="icon fa fa-music"></i></div>
+                                        <div class="item-inner">
+                                            <div class="item-title label">Songs</div>
+                                            <div class="item-input">
+                                                <input id="term" type="text" placeholder="Search for..." value="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-media"><i class="icon fa fa-list-ol"></i></div>
+                                        <div class="item-inner">
+                                            <div class="item-title label">Max Results</div>
+                                            <div class="item-input">
+                                                <div class="range-slider">
+                                                    <input id="numResults" type="range" min="0" max="50" value="10" step="10" />
+                                                </div>
+                                            </div>
+                                            <div class="item-input rangeVal">
+                                                <input id="sliderVal" type="text" disabled value="10">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-100" id="loading-search">
+                            <div class="loading-inner">
+                                <span id="loading-image" class="preloader"></span>
+                            </div>
+                        </div>
+                        <div class="content-block">
+                            <div class="row">
+                                <div class="col-100">
+                                    <input id="btnSearch" type="button" value="Submit" class="button button-big button-fill color-green" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="latest-track" class="card more-pages">
+                            <div class="card-header">LATEST TRACK </div>
+                            <div class="card-content">
+                                <div class="list-block media-list">
+                                    <ul class="media-item-list">
+                                    </ul>
+                                </div>
+                                <div class="try-load">
+                                    <span class="try-load-again"><span class="t1">Having trouble connecting.</span><span class="t2"> Try Again.</span></span>
+                                </div>
+                            </div>
+
+                            <div class="col-100" id="loading-more-post-image">
+                                <div class="loading-inner">
+                                    <span class="preloader"></span>
+                                </div>
+                            </div>
+                            <div class="loading-item">
+                                    <span style="width:42px; height:42px" class="preloader"></span>
+                                </div>
+
+                            <div class="card-footer">
+                                <span class="load_more">Load More</span>
+                                <span class="total-count"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                     <div id="audioPlaylist" class="bottom">
+                        <div class="player audioPlayer">
+                            <div id="pl-timeline">
+                                <div id="pl-scrub"></div>
+                                <div id="pl-playhead"></div>
+                            </div>
+                            <div class="tracker"></div>
+                            <div class="cover"></div>
+                            <div class="controls">
+                                <div class="rew"></div>
+                                <div id="btnAudioPPL" class="pl-play"></div>
+                                <div class="fwd"></div>
+                            </div>
+                            <div class="artist-info">
+                                <div class="info-song item-title title"></div>
+                                <div class="info-name item-title artist"></div>
+                            </div>
+
+                        
+                        </div>
+                        <ul class="playlist playlist-mp3 hidden">
+                        </ul>
+                    </div>-->
+                    <div id="audioplaceholder"></div>
+                </div>
+            </div>
+
+            <!-- Bottom Toolbar on every view unless no-toolbar class specified (see item template)-->
+            <!--          
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a href="http://www.spotify.com" class="link external">
+                     <i class="icon icon-spotify"></i>
+                     <p class="color-white">&nbsp;Spotify</p>
+                 </a>
+
+                    <a href="http://www.idangero.us/framework7" class="link external">
+                     <i class="icon icon-f7"></i>
+                 </a>
+                </div>
+            </div>-->
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <a href="#" class="link">Browse</a>
+                    <a href="#" class="link">Playlist</a>
+                    <a href="#" class="link"><a class="fa fa-heart"></i> <span> Favorites</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script id="listTemplate" type="text/template7">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Back</span></a></div>
+                <div class="center sliding">Results</div>
+                
+            </div>
+        </div>
+
+        <div class="page" data-page="list">
+            <form class="searchbar searchbar-init" data-search-list=".list-block-search" data-search-in=".item-title" data-searchbar-found=".searchbar-found"
+                data-searchbar-not-found=".searchbar-not-found">
+                <div class="searchbar-input">
+                    <input type="search" placeholder="Search">
+                    <a href="#" class="searchbar-clear"></a>
+                </div>
+                <a href="#" class="searchbar-cancel">Cancel</a>
+            </form>
+            <div class="searchbar-overlay"></div>
+            <div class="page-content">
+                <!-- no result -->
+                <div class="content-block searchbar-not-found">
+                    Nothing found
+                </div>
+
+                <div id="mediaList" class="list-block media-list list-block-search searchbar-found">
+                    <ul>
+                        {{#each this}}
+                        <li class="swipeout">
+                            <div class="swipeout-content">
+                                <a href="#" class="item-content item-link" data-template="itemTemplate" data-context='{"id":"{{id}}", "thumbnail": "{{thumbnail}}", "mp3_file": "{{mp3_file}}", "song_title":"{{song_title}}", "artist": "{{artist}}" , "lyrics": "{{lyrics}}"}'>
+                                    <div class="item-media">
+                                        {{#if thumbnail}}<img data-src="{{thumbnail}}" class="lazy lazy-fadein">{{/if}}
+                                    </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">{{song_title}}</div>
+                                        </div>
+                                        <div class="item-subtitle">{{artist}}</div>
+
+                                    </div>
+                                </a>
+                            </div>
+                            <!--
+                            <div class="swipeout-actions-right">
+                                <a href="#" class="bg-orange favorite" data-item="{{@index}}"><i class="icon fa fa-star fa-2x"></i></a>
+                                <a href="#" class="bg-blue share" data-item="{{@index}}"><i class="icon fa fa-share fa-2x"></i></a>
+                            </div>-->
+                            {{#if mp3_file}}
+                            <!--
+                            <div class="swipeout-actions-left">
+                                <a href="#" class="bg-green preview" data-item="{{@index}}"><i class="icon fa fa-play fa-2x"></i></a>
+                            </div>-->
+                            {{/if}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Media Item Template -->
+    <script id="itemTemplate" type="text/template7">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Back</span></a></div>
+                <div class="center sliding">{{song_title}}</div>
+                <div class="right">
+                    <a href="#" class="link star"><i class="fa fa-star-o"></i></a>
+                </div>
+            </div>
+        </div>
+
+         <div data-page="media" class="page">
+                <div class="page-content">
+                    <div class="item-data-info">
+                        <div class="item-data-image">
+                             {{#if thumbnail}}<img data-src="{{thumbnail}}" class="lazy lazy-fadein">{{/if}}
+                        </div>
+                        <div class="header-text">
+                            <div class="song-data-info">
+                                <div class="in-label">Artist:</div>
+                                <div class="info-name item-title">{{artist}}</div>
+                                <div class="in-label">Track:</div>
+                                <div class="info-song item-title">{{song_title}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                   {{#if lyrics}}
+                        <div class="lyrics">
+                            <div class="lyrics-content-inner">
+                            <div class="lyrics-content">{{lyrics}}</div>
+                            </div>
+                        </div>
+                   {{else}}
+                   <div class="card">
+                    <div class="card-content">
+                        <div class="card-content-inner">Lyrics is not available for this song. Sorry!</div>
+                    </div>
+                    </div>
+                   {{/if}}
+                </div>
+                {{#if mp3_file}}
+                    <div id="previewAudio" class="item-content bottom-audio">
+                            <audio  preload="auto" id="musicMP3" src="{{mp3_file}}"></audio>
+                            <div class="playbacktime"></div>                            
+                            <div class="audioPlayer">   
+                                <div id="timeline">
+                                    <div id="scrub"></div>
+                                    <div id="playhead"></div>
+                                </div>
+                                <div id="btnAudioPP" class="play"></div>
+                                <div class="artist-info"><div class="info-song item-title">{{song_title}}</div><div class="info-name item-title">{{artist}}</div></div>
+                            </div>
+                    </div> 
+                {{/if}}
+            </div> 
+    </script>
+
+
+    <script type="text/template7" id="favorites">
+    <!-- Dynamic navbar for iOS theme -->
+   
+    <div class="navbar">
+      <div class="navbar-inner nav-fav">
+        <div class="left">
+          <a href="#" class="link icon-only open-panel"><i class="fa fa-bars"></i></a>
+        </div>
+        <div class="center sliding fav-title"> Favorites </div>
+      </div>
+    </div>
+  
+
+    <div class="page" data-page="favorites">
+        <!-- Fixed navbar for Material theme -->
+       
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="left">
+                <a href="#" class="link icon-only open-panel"><i class="fa fa-bars"></i></a>
+              </div>
+            <div class="center sliding">Favorites</div>
+          </div>
+        </div>
+      
+
+        <div class="page-content">
+          {{#if tracks}}
+          <div class="content-block-title">
+              <div class="left">Tracks</div><div class="playlist-button right button-fill color-green f-small"><i class="fa fa-list icon-pl"></i>Playlist</div>
+          </div>
+          <div class="list-block media-list">
+            <ul>
+              {{#each tracks}}
+              <li>
+                <a href="#" class="item-content item-link" data-template="itemTemplate" data-context='{"id":"{{id}}","thumbnail": "{{thumbnail}}", "mp3_file": "{{mp3_file}}", "song_title":"{{song_title}}", "artist": "{{artist}}" , "lyrics": "{{lyric}}"}'>
+                  <div class="item-media">
+                    <img width="80" src="{{this.thumbnail}}">
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">{{this.song_title}}</div>
+                      
+                    </div>
+                    <div class="item-subtitle">{{this.artist}}</div>
+                  </div>
+                </a>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+          {{else}}
+          <div class="content-block">
+            <p>You haven't favorited any tracks! Use the search function and add some music to favorites by clicking favorite link (<i class="icon fa fa-star"></i>) on top right.</p>
+          </div>
+          {{/if}}
+        </div>
+    </div>
+  </script>
+ 
+  <script type="text/template7" id="listplaylist">
+ <!-- Dynamic navbar for iOS theme -->
+   
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="#" class="link icon-only open-panel"><i class="fa fa-bars"></i></a>
+        </div>
+        <div class="center sliding">Playlists</div>
+      </div>
+    </div>
+  
+
+    <div class="page" data-page="listplaylist">
+        <!-- Fixed navbar for Material theme -->
+       
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="left">
+                <a href="#" class="link icon-only open-panel"><i class="fa fa-bars"></i></a>
+              </div>
+            <div class="center sliding">Playlists</div>
+          </div>
+        </div>
+      
+
+        <div class="page-content p-initial">
+          {{#if tracks}}
+          <div class="content-block-title">
+              <div class="left">Tracks</div>
+          </div>
+        <div class="list-block media-list">
+          <ul class="playlist playlist-mp3">
+                    {{#each tracks}}
+                    
+                    <li audiourl="{{mp3_file}}" cover="{{thumbnail}}" song="{{this.song_title}}" artist="{{artist}} " class="">
+                       
+                        <div class="item-media">
+                            <img width="60" src="{{this.thumbnail}}">
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                            <div class="item-title">{{this.song_title}}</div>
+                            
+                            </div>
+                            <div class="item-subtitle">{{this.artist}}</div>
+                        </div>
+                    </li>
+                    
+                    {{/each}}
+            </ul>
+        </div>
+
+        <div id="audioplaylistcontainer">
+        <div id="audioPlaylist" class="bottom">
+            <div class="player audioPlayer">
+                <div id="pl-timeline">
+                    <div id="pl-scrub"></div>
+                    <div id="pl-playhead"></div>
+                </div>
+                <div class="tracker"></div>
+                <div class="cover"></div>
+                <div class="controls">
+                    <div class="rew"></div>
+                    <div id="btnAudioPPL" class="pl-play"></div>
+                    <div class="fwd"></div>
+                </div>
+                <div class="artist-info">
+                    <div class="info-song item-title title"></div>
+                    <div class="info-name item-title artist"></div>
+                </div>           
+            </div>                
+        </div>
+        </div>
+          {{else}}
+          <div class="content-block">
+            <p>You haven't favorited any tracks! Use the search function and add some to favorites.</p>
+          </div>
+          {{/if}}
+        </div>
+          {{/if}}
+        </div>
+    </div>
+</script>
+
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+      init();
+    });
+  </script>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/my-app.js"></script>
+    <!--<script type="text/javascript" src="js/admob.js"></script>-->
+</body>
+
+</html>

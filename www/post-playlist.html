@@ -1,0 +1,84 @@
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="#" class="link icon-only open-panel"><i class="fa fa-bars"></i></a>
+        </div>
+        <div class="center sliding">Playlists</div>
+      </div>
+    </div>
+  
+
+    <div class="page" data-page="playlist">
+        <!-- Fixed navbar for Material theme -->
+       
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="left">
+                <a href="#" class="link icon-only open-panel"><i class="fa fa-bars"></i></a>
+              </div>
+            <div class="center sliding">Playlists</div>
+          </div>
+        </div>
+      
+
+        <div class="page-content p-initial">
+          {{#if tracks}}
+          <div class="content-block-title">
+              <div class="left">Tracks</div>
+          </div>
+        <div class="list-block media-list">
+          <ul class="playlist playlist-mp3">
+                    {{#each tracks}}
+                    
+                    <li audiourl="{{mp3_file}}" cover="{{thumbnail}}" song="{{this.song_title}}" artist="{{artist}} " class="">
+                       
+                        <div class="item-media">
+                            <img width="60" src="{{this.thumbnail}}">
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                            <div class="item-title">{{this.song_title}}</div>
+                            
+                            </div>
+                            <div class="item-subtitle">{{this.artist}}</div>
+                        </div>
+                    </li>
+                    
+                    {{/each}}
+            </ul>
+        </div>
+
+        <div id="audioPlaylist" class="bottom">
+            <div class="player audioPlayer">
+                <div id="pl-timeline">
+                    <div id="pl-scrub"></div>
+                    <div id="pl-playhead"></div>
+                </div>
+                <div class="tracker"></div>
+                <div class="cover"></div>
+                <div class="controls">
+                    <div class="rew"></div>
+                    <div id="btnAudioPPL" class="pl-play"></div>
+                    <div class="fwd"></div>
+                </div>
+                <div class="artist-info">
+                    <div class="info-song item-title title"></div>
+                    <div class="info-name item-title artist"></div>
+                </div>           
+            </div>                
+        </div>
+          {{else}}
+          <div class="content-block">
+            <p>You haven't favorited any tracks! Use the search function and add some to favorites.</p>
+          </div>
+          {{/if}}
+        </div>
+          {{/if}}
+        </div>
+    </div>
+
+
+
+
+  
